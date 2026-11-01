@@ -153,7 +153,26 @@ RSpec.describe "discourse-doc-categories-tags" do
     expect(page).to have_css(".discourse-tag[data-tag-name='wiki']")
   end
 
-  it "redirects the tag's own page to the category" do
+  it "uses only the first tag when several are set" do
+    component.update_setting(:tag_name, "wiki|handbook")
+    component.save!
+
+    visit target_category_path
+
+    expect(page).to have_css(".topic-list-item.doc-categories-tags-topic")
+    expect(page).to have_no_css(".topic-list .discourse-tag[data-tag-name='wiki']")
+  end
+
+  it "keeps the tag's own page unless the redirect is on" do
+    visit "/tag/wiki"
+
+    expect(page).to have_current_path(%r{/tag/wiki}, ignore_query: true)
+  end
+
+  it "redirects the tag's own page to the category when enabled" do
+    component.update_setting(:redirect_tag_page, true)
+    component.save!
+
     visit "/tag/wiki"
 
     expect(page).to have_current_path(target_category_path, ignore_query: true)
@@ -168,7 +187,18 @@ RSpec.describe "discourse-doc-categories-tags" do
     expect(page).to have_current_path(%r{/tag/handbook}, ignore_query: true)
   end
 
-  it "renders no hashtag for the tag, and leaves other hashtags alone" do
+  it "leaves hashtags alone by default" do
+    Fabricate(:post, topic: docs_recent, raw: "See #wiki and #handbook here")
+
+    visit "/t/#{docs_recent.slug}/#{docs_recent.id}"
+
+    expect(page).to have_css("a.hashtag-cooked[data-slug='wiki']")
+  end
+
+  it "renders no hashtag for the tag when enabled, and leaves other hashtags alone" do
+    component.update_setting(:hide_tag_hashtags, true)
+    component.save!
+
     Fabricate(:post, topic: docs_recent, raw: "See #wiki and #handbook here")
 
     visit "/t/#{docs_recent.slug}/#{docs_recent.id}"

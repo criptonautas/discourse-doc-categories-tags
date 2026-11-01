@@ -4,3 +4,6 @@ es:
     settings:
       tag_name: "Etiqueta cuyos temas se integran en la lista de temas de la categoría. Solo se usa la primera etiqueta."
       target_category: "Categoría cuya lista de temas recibe los temas etiquetados. Solo se usa la primera categoría."
+      redirect_tag_page: "Envía la página de la etiqueta a la categoría. Ocurre en el cliente, así que los rastreadores no la siguen."
+      hide_tag_hashtags: "En todo el sitio: un hashtag de esta etiqueta no muestra nada en los posts. Los demás hashtags no cambian."
+      hide_disabled_tag_rows: "En todo el sitio: oculta en la búsqueda de etiquetas del editor las filas que el núcleo marca como no permitidas, junto con su explicación."

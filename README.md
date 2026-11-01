@@ -8,6 +8,10 @@ A Discourse theme component that mixes every topic carrying a given tag into
 one category's own topic list, so tagged topics scattered across the forum
 read as part of that category's documentation.
 
+| Desktop | Mobile |
+|---|---|
+| ![Tagged topics mixed into a category, desktop](docs/screenshots/doc-tags-desktop.png) | ![Tagged topics mixed into a category, mobile](docs/screenshots/doc-tags-mobile.png) |
+
 The [Doc Categories](https://github.com/discourse/discourse-doc-categories)
 plugin builds documentation out of a category, which means it cannot gather
 topics that live elsewhere. This component closes that gap: tag a topic
@@ -25,14 +29,18 @@ that natively belong there.
 
 Admin → Customize → Themes → Install → From a git repository, with this
 repository's clone URL. Then add the component to the themes that should use
-it, and set `target_category` — nothing happens until you do.
+it, and set `target_category`: the merge needs it. The docs sidebar behavior
+doesn't, so it applies as soon as the component is on and Doc Categories has an index.
 
 ## Settings
 
 | Setting | Default | Notes |
 | --- | --- | --- |
 | `tag_name` | `wiki` | Tag whose topics get mixed in. Only the first tag is used. |
-| `target_category` | — | The category whose list gains those topics. Only the first category is used. Required. |
+| `target_category` | — | The category whose list gains those topics. Only the first category is used. Required for the merge. |
+| `redirect_tag_page` | `false` | Send `/tag/<tag>` to the target category. |
+| `hide_tag_hashtags` | `false` | **Site-wide:** a `#<tag>` hashtag renders nothing in posts. |
+| `hide_disabled_tag_rows` | `false` | **Site-wide:** hide the rows core lists as not allowed in the composer's tag search. |
 
 ## What it does
 
@@ -68,23 +76,22 @@ which resolves membership the same way.
 
 ### Removes the noise the tag leaves behind
 
-These rules assume the tag is plumbing rather than something readers should
-see or type. They are opinionated, and two of them reach beyond the target
-category, so read them before installing:
+The tag pill is hidden on the target category's list, where it only repeats what
+the page already is. It stays visible everywhere else, and other tags are untouched.
 
-- The tag pill is hidden on the target category's list, where it only repeats
-  what the page already is. It stays visible everywhere else, and other tags
-  are untouched.
-- `/tag/<tag>` redirects to the target category, since the category now holds
-  everything carrying the tag. Tag editing and `/tags/c/...` intersections
-  are left alone.
-- A `#<tag>` hashtag written into a post body renders nothing, **site-wide**,
-  so the tag is applied through the tag selector instead. Other hashtags are
-  untouched and the word stays in the raw markdown.
-- Disabled rows are hidden in the composer's tag search, **site-wide**. When
-  a category restricts which tags it allows, core lists the ones it does not
-  allow as disabled rows explaining why; this hides that explanation. What is
-  offered is still decided server-side.
+Three more rules assume the tag is plumbing rather than something readers should
+see or type. They are opinionated, so they're off by default:
+
+- `redirect_tag_page`: `/tag/<tag>` redirects to the target category, since the
+  category now holds everything carrying the tag. Tag editing and `/tags/c/...`
+  intersections are left alone.
+- `hide_tag_hashtags`: a `#<tag>` hashtag written into a post body renders nothing,
+  **site-wide**, so the tag is applied through the tag selector instead. Other
+  hashtags are untouched and the word stays in the raw markdown.
+- `hide_disabled_tag_rows`: disabled rows are hidden in the composer's tag search,
+  **site-wide**. When a category restricts which tags it allows, core lists the ones
+  it does not allow as disabled rows explaining why; this hides that explanation.
+  What is offered is still decided server-side.
 
 ## Limits and caveats
 

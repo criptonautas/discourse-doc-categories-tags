@@ -1,21 +1,36 @@
+@use "sass:string";
+
+// `tag_name` is a list and only its first tag is used, here as in the initializer.
+$doc-tag: $tag-name;
+$tag-separator: string.index($tag-name, "|");
+
+@if $tag-separator {
+  $doc-tag: string.slice($tag-name, 1, $tag-separator - 1);
+}
+
 // On the target category the tag is what pulled these topics in, so the
 // pill repeats what the page already is. It stays visible everywhere else,
 // and other tags on these topics are untouched.
-.doc-categories-tags-list .discourse-tag[data-tag-name="#{$tag-name}"] {
+.doc-categories-tags-list .discourse-tag[data-tag-name="#{$doc-tag}"] {
   display: none;
 }
 
-// The tag is meant to be applied through the tag selector, so a #<tag>
+// Theme settings reach SCSS as unquoted strings, not booleans.
+// For sites that apply the tag through the tag selector only, so a #<tag>
 // written into a post body renders nothing. Other hashtags are untouched.
-a.hashtag-cooked[data-type="tag"][data-slug="#{$tag-name}"] {
-  display: none;
+@if $hide-tag-hashtags == "true" {
+  a.hashtag-cooked[data-type="tag"][data-slug="#{$doc-tag}"] {
+    display: none;
+  }
 }
 
 // When a category restricts which tags it allows, core appends the tags it
 // does not allow to the composer's tag search as disabled rows carrying a
 // "not allowed in this category" explanation. Tag choosers only, but this
 // one is site-wide rather than scoped to the target category.
-.mini-tag-chooser .select-kit-row.disabled,
-.tag-chooser .select-kit-row.disabled {
-  display: none;
+@if $hide-disabled-tag-rows == "true" {
+  .mini-tag-chooser .select-kit-row.disabled,
+  .tag-chooser .select-kit-row.disabled {
+    display: none;
+  }
 }

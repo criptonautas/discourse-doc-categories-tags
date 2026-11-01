@@ -154,43 +154,45 @@ export default apiInitializer((api) => {
     return value;
   });
 
-  // The category page now holds everything carrying the tag, so send the
-  // tag's own page there. Only this tag, and only its listing routes:
-  // tag.edit and tag/category intersections are left alone. The component
-  // fetches its data through the store, not the router, so this does not
-  // interfere with it.
-  const router = api.container.lookup("service:router");
+  if (settings.redirect_tag_page) {
+    // The category page now holds everything carrying the tag, so send the
+    // tag's own page there. Only this tag, and only its listing routes:
+    // tag.edit and tag/category intersections are left alone. The component
+    // fetches its data through the store, not the router, so this does not
+    // interfere with it.
+    const router = api.container.lookup("service:router");
 
-  router.on("routeWillChange", (transition) => {
-    const name = transition.to?.name;
+    router.on("routeWillChange", (transition) => {
+      const name = transition.to?.name;
 
-    if (name !== "tag.legacyRedirect" && !name?.startsWith("tag.show")) {
-      return;
-    }
+      if (name !== "tag.legacyRedirect" && !name?.startsWith("tag.show")) {
+        return;
+      }
 
-    const params = transition.to.params ?? {};
-    const target = (params.tag_slug || params.tag_name || "").toLowerCase();
+      const params = transition.to.params ?? {};
+      const target = (params.tag_slug || params.tag_name || "").toLowerCase();
 
-    if (target !== tag.toLowerCase()) {
-      return;
-    }
+      if (target !== tag.toLowerCase()) {
+        return;
+      }
 
-    // Not in the store when categories are lazy loaded; leave the tag page.
-    const category = Category.findById(categoryId);
-    if (!category) {
-      return;
-    }
+      // Not in the store when categories are lazy loaded; leave the tag page.
+      const category = Category.findById(categoryId);
+      if (!category) {
+        return;
+      }
 
-    transition.abort();
+      transition.abort();
 
-    // On a direct hit the server preloaded the tag page's topic list, and
-    // the category route would otherwise pick it up: the preload is matched
-    // on the filter mode alone ("latest"), not the path. Core drops it the
-    // same way when it redirects away from a preloaded list.
-    PreloadStore.getAndRemove("topic_list");
+      // On a direct hit the server preloaded the tag page's topic list, and
+      // the category route would otherwise pick it up: the preload is matched
+      // on the filter mode alone ("latest"), not the path. Core drops it the
+      // same way when it redirects away from a preloaded list.
+      PreloadStore.getAndRemove("topic_list");
 
-    router.replaceWith(category.url);
-  });
+      router.replaceWith(category.url);
+    });
+  }
 
   api.registerValueTransformer(
     "topic-list-item-class",

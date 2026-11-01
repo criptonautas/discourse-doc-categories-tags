@@ -6,8 +6,8 @@ filed in another category as a doc topic.
 
 ## Before changing anything
 
-- Read `README.md`. Its "Behavior" and "Known limits" sections are the spec.
-- Two behaviors depend on internals of the third-party
+- Read `README.md`. Its "What it does" and "Limits and caveats" sections are the spec.
+- Two behaviors depend on internals of the official
   [discourse-doc-categories](https://github.com/discourse/discourse-doc-categories)
   plugin, and on how core merges preloaded topic lists. Both are explained in
   the README; neither is a supported API.
@@ -25,6 +25,9 @@ CI installs the Doc Categories plugin through `tests.requiredPlugins` in
 discourse_theme rspec .
 pnpm lint
 ```
+
+Screenshots in `docs/screenshots/` come from `spec/system/screenshots_spec.rb` via
+Actions → Screenshots.
 
 Core's `set_navigation_menu` helper and its page objects are not loaded for
 theme specs; set the site setting and use raw selectors instead.

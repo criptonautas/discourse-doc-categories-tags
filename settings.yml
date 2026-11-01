@@ -7,3 +7,12 @@ target_category:
   type: list
   list_type: category
   default: ""
+
+redirect_tag_page:
+  default: false
+
+hide_tag_hashtags:
+  default: false
+
+hide_disabled_tag_rows:
+  default: false

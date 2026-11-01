@@ -15,6 +15,10 @@ temas que viven en otro sitio. Este componente cubre ese hueco: etiqueta un
 tema en cualquier parte y aparecerá en la categoría de documentación junto a
 los temas que pertenecen nativamente a ella.
 
+| Escritorio | Móvil |
+|---|---|
+| ![Temas etiquetados integrados en una categoría, escritorio](docs/screenshots/doc-tags-desktop.png) | ![Temas etiquetados integrados en una categoría, móvil](docs/screenshots/doc-tags-mobile.png) |
+
 ## Requisitos
 
 - Discourse 2026.7.2 o posterior.
@@ -26,14 +30,19 @@ los temas que pertenecen nativamente a ella.
 
 Admin → Personalizar → Temas → Instalar → Desde un repositorio git, con la URL
 de clonado de este repositorio. Luego añade el componente a los temas que
-deban usarlo y configura `target_category`: hasta entonces no ocurre nada.
+deban usarlo y configura `target_category`: la integración lo necesita. El
+comportamiento de la barra lateral no, así que se aplica en cuanto el componente
+está activo y Doc Categories tiene un índice.
 
 ## Ajustes
 
 | Ajuste | Por defecto | Notas |
 | --- | --- | --- |
 | `tag_name` | `wiki` | Etiqueta cuyos temas se integran. Solo se usa la primera etiqueta. |
-| `target_category` | — | Categoría cuya lista recibe esos temas. Solo se usa la primera categoría. Obligatorio. |
+| `target_category` | — | Categoría cuya lista recibe esos temas. Solo se usa la primera categoría. Obligatorio para la integración. |
+| `redirect_tag_page` | `false` | Envía `/tag/<etiqueta>` a la categoría destino. |
+| `hide_tag_hashtags` | `false` | **En todo el sitio:** un hashtag `#<etiqueta>` no muestra nada en los posts. |
+| `hide_disabled_tag_rows` | `false` | **En todo el sitio:** oculta las filas que el núcleo marca como no permitidas en la búsqueda de etiquetas del editor. |
 
 ## Qué hace
 
@@ -73,24 +82,24 @@ que resuelve la pertenencia igual.
 
 ### Quita el ruido que deja la etiqueta
 
-Estas reglas dan por hecho que la etiqueta es fontanería, no algo que los
-lectores deban ver ni escribir. Son opinadas, y dos de ellas van más allá de la
-categoría destino, así que léelas antes de instalar:
+La píldora de la etiqueta se oculta en la lista de la categoría destino, donde solo
+repite lo que la página ya es. Sigue visible en todos los demás lugares, y las otras
+etiquetas no cambian.
 
-- La píldora de la etiqueta se oculta en la lista de la categoría destino,
-  donde solo repite lo que ya es la página. Sigue visible en todo lo demás, y
-  las otras etiquetas no se tocan.
-- `/tag/<etiqueta>` redirige a la categoría destino, porque la categoría ya
-  contiene todo lo que lleva la etiqueta. La edición de etiquetas y las
-  intersecciones `/tags/c/...` se dejan en paz.
-- Un hashtag `#<etiqueta>` escrito en el cuerpo de una publicación no renderiza
-  nada, **en todo el sitio**, de modo que la etiqueta se aplica desde el
-  selector de etiquetas. Los demás hashtags no se tocan y la palabra sigue en
-  el markdown original.
-- Se ocultan las filas desactivadas en el buscador de etiquetas del editor,
-  **en todo el sitio**. Cuando una categoría restringe qué etiquetas admite, el
-  núcleo lista las que no admite como filas desactivadas que explican por qué;
-  esto oculta esa explicación. Lo que se ofrece lo sigue decidiendo el servidor.
+Otras tres reglas asumen que la etiqueta es parte de la mecánica, no algo que los
+lectores deban ver ni escribir. Son opinadas, así que vienen desactivadas:
+
+- `redirect_tag_page`: `/tag/<etiqueta>` redirige a la categoría destino, porque la
+  categoría ya contiene todo lo que lleva la etiqueta. La edición de etiquetas y las
+  intersecciones `/tags/c/...` no cambian.
+- `hide_tag_hashtags`: un hashtag `#<etiqueta>` escrito en un post no muestra nada,
+  **en todo el sitio**, de modo que la etiqueta se aplica desde el selector. Los demás
+  hashtags no cambian y la palabra sigue en el markdown original.
+- `hide_disabled_tag_rows`: las filas deshabilitadas se ocultan en la búsqueda de
+  etiquetas del editor, **en todo el sitio**. Cuando una categoría restringe qué
+  etiquetas admite, el núcleo lista las no permitidas como filas deshabilitadas que
+  explican el motivo; esto oculta esa explicación. Lo que se ofrece se sigue decidiendo
+  en el servidor.
 
 ## Límites y advertencias
 

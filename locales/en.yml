@@ -4,3 +4,6 @@ en:
     settings:
       tag_name: "Tag whose topics are mixed into the category's topic list. Only the first tag is used."
       target_category: "Category whose topic list gains the tagged topics. Only the first category is used."
+      redirect_tag_page: "Send the tag's own page to the category. Client side, so crawlers don't follow it."
+      hide_tag_hashtags: "Site-wide: a hashtag for this tag renders nothing in posts. Other hashtags are untouched."
+      hide_disabled_tag_rows: "Site-wide: hide the rows core lists as not allowed in the composer's tag search, along with their explanation."
