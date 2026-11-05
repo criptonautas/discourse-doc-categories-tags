@@ -71,7 +71,7 @@ a topic drives that topic's sidebar.
 This part is deliberately tag-independent — it keys on the index, not on
 `tag_name` — so it also helps documentation topics that have nothing to do
 with the merge above. Previous/next navigation for the same case lives in
-[discourse-course-progress-nautas](https://github.com/somos-criptonautas/discourse-course-progress-nautas),
+[discourse-course-progress-nautas](https://github.com/criptonautas/discourse-course-progress-nautas),
 which resolves membership the same way.
 
 ### Removes the noise the tag leaves behind
@@ -132,7 +132,7 @@ installs the Doc Categories plugin from `tests.requiredPlugins`:
 discourse_theme rspec .
 ```
 
-Verified against Discourse `2026.7.2` (stable) and `2026.9.0-latest`.
+CI runs against the latest Discourse and the Doc Categories plugin, and weekly.
 
 ## License
 

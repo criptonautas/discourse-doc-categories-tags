@@ -77,7 +77,7 @@ Esta parte es independiente de la etiqueta a propósito —se basa en el índice
 no en `tag_name`—, así que también sirve a temas de documentación que no tienen
 nada que ver con la integración anterior. La navegación anterior/siguiente para
 el mismo caso está en
-[discourse-course-progress-nautas](https://github.com/somos-criptonautas/discourse-course-progress-nautas),
+[discourse-course-progress-nautas](https://github.com/criptonautas/discourse-course-progress-nautas),
 que resuelve la pertenencia igual.
 
 ### Quita el ruido que deja la etiqueta
@@ -142,7 +142,7 @@ instala el plugin Doc Categories desde `tests.requiredPlugins`:
 discourse_theme rspec .
 ```
 
-Verificado contra Discourse `2026.7.2` (estable) y `2026.9.0-latest`.
+La CI corre contra la última versión de Discourse y del plugin Doc Categories, también cada semana.
 
 ## Licencia
 
