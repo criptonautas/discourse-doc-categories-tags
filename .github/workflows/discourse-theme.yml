@@ -14,10 +14,3 @@ on:
 jobs:
   ci:
     uses: discourse/.github/.github/workflows/discourse-theme.yml@v1
-    with:
-      # Pinned to stable: core main opens a libvips unix socket under
-      # Rails.root/tmp, and in Actions the checkout path repeats the repo
-      # name, so the socket path exceeds the 108-byte limit and db:migrate
-      # dies. Drop this back to the default "latest" once core moves that
-      # socket out of the working directory.
-      core_ref: stable
