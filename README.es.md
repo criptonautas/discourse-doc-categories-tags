@@ -1,4 +1,4 @@
-# Doc Categories Tags
+# Docs by Tag
 
 [ENGLISH](README.md) | **ESPAÑOL**
 
