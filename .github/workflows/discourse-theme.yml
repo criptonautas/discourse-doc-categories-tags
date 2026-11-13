@@ -11,6 +11,9 @@ on:
   schedule:
     - cron: "0 5 * * 1"
 
+permissions:
+  contents: read
+
 jobs:
   ci:
     uses: discourse/.github/.github/workflows/discourse-theme.yml@v1
